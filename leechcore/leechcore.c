@@ -36,36 +36,16 @@ VOID LcCloseAll();
 _Success_(return) BOOL LcReadContigious_Initialize(_In_ PLC_CONTEXT ctxLC);
 VOID LcReadContigious_Close(_In_ PLC_CONTEXT ctxLC);
 
-#ifdef _WIN32
-BOOL WINAPI DllMain(_In_ HINSTANCE hinstDLL, _In_ DWORD fdwReason, _In_ PVOID lpvReserved)
-{
-    if(fdwReason == DLL_PROCESS_ATTACH) {
-        ZeroMemory(&g_ctx, sizeof(LC_MAIN_CONTEXT));
-        InitializeCriticalSection(&g_ctx.Lock);
-    }
-    if(fdwReason == DLL_PROCESS_DETACH) {
-        LcCloseAll();
-        DeleteCriticalSection(&g_ctx.Lock);
-        ZeroMemory(&g_ctx, sizeof(LC_MAIN_CONTEXT));
-    }
-    return TRUE;
-}
-#endif /* _WIN32 */
-#ifdef LINUX
-__attribute__((constructor)) VOID LcAttach()
-{
+VOID LeechCoreAttach() {
     ZeroMemory(&g_ctx, sizeof(LC_MAIN_CONTEXT));
     InitializeCriticalSection(&g_ctx.Lock);
 }
 
-__attribute__((destructor)) VOID LcDetach()
-{
+VOID LeechCoreDetach() {
     LcCloseAll();
     DeleteCriticalSection(&g_ctx.Lock);
     ZeroMemory(&g_ctx, sizeof(LC_MAIN_CONTEXT));
 }
-#endif /* LINUX */
-
 
 
 //-----------------------------------------------------------------------------

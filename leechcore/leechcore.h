@@ -631,6 +631,8 @@ typedef VOID(*PLC_BAR_FUNCTION_CALLBACK)(_Inout_ PLC_BAR_REQUEST pBarRequest);
 #define LC_BAR_FUNCTION_CALLBACK_DISABLE        (PLC_BAR_FUNCTION_CALLBACK)(NULL)
 #define LC_BAR_FUNCTION_CALLBACK_ZEROBAR        (PLC_BAR_FUNCTION_CALLBACK)(-1)
 
+VOID LeechCoreAttach();
+VOID LeechCoreDetach();
 
 #ifdef __cplusplus
 }

@@ -55,62 +55,62 @@ QWORD Util_GetNumericA(_In_ LPSTR sz)
     "................................................................" \
     "................................................................" \
 
-BOOL Util_FillHexAscii(_In_ PBYTE pb, _In_ DWORD cb, _In_ DWORD cbInitialOffset, _Inout_opt_ LPSTR sz, _Inout_ PDWORD pcsz)
-{
-    DWORD i, j, o = 0, iMod, cRows;
-    // checks
-    if((cbInitialOffset > cb) || (cbInitialOffset > 0x1000) || (cbInitialOffset & 0xf)) { return FALSE; }
-    cRows = (cb + 0xf) >> 4;
-    if(!sz) {
-        *pcsz = 1 + cRows * 76;
-        return TRUE;
-    }
-    if(!pb || (*pcsz <= cRows * 76)) { return FALSE; }
-    // fill buffer with bytes
-    for(i = cbInitialOffset; i < cb + ((cb % 16) ? (16 - cb % 16) : 0); i++)
-    {
-        // address
-        if(0 == i % 16) {
-            iMod = i % 0x10000;
-            sz[o++] = Util_2HexChar(iMod >> 12);
-            sz[o++] = Util_2HexChar(iMod >> 8);
-            sz[o++] = Util_2HexChar(iMod >> 4);
-            sz[o++] = Util_2HexChar(iMod);
-            sz[o++] = ' ';
-            sz[o++] = ' ';
-            sz[o++] = ' ';
-            sz[o++] = ' ';
-        } else if(0 == i % 8) {
-            sz[o++] = ' ';
-        }
-        // hex
-        if(i < cb) {
-            sz[o++] = Util_2HexChar(pb[i] >> 4);
-            sz[o++] = Util_2HexChar(pb[i]);
-            sz[o++] = ' ';
-        } else {
-            sz[o++] = ' ';
-            sz[o++] = ' ';
-            sz[o++] = ' ';
-        }
-        // ascii
-        if(15 == i % 16) {
-            sz[o++] = ' ';
-            sz[o++] = ' ';
-            for(j = i - 15; j <= i; j++) {
-                if(j >= cb) {
-                    sz[o++] = ' ';
-                } else {
-                    sz[o++] = UTIL_PRINTASCII[pb[j]];
-                }
-            }
-            sz[o++] = '\n';
-        }
-    }
-    sz[o] = 0;
-    *pcsz = o;
-    return TRUE;
-}
+//BOOL Util_FillHexAscii(_In_ PBYTE pb, _In_ DWORD cb, _In_ DWORD cbInitialOffset, _Inout_opt_ LPSTR sz, _Inout_ PDWORD pcsz)
+//{
+//    DWORD i, j, o = 0, iMod, cRows;
+//    // checks
+//    if((cbInitialOffset > cb) || (cbInitialOffset > 0x1000) || (cbInitialOffset & 0xf)) { return FALSE; }
+//    cRows = (cb + 0xf) >> 4;
+//    if(!sz) {
+//        *pcsz = 1 + cRows * 76;
+//        return TRUE;
+//    }
+//    if(!pb || (*pcsz <= cRows * 76)) { return FALSE; }
+//    // fill buffer with bytes
+//    for(i = cbInitialOffset; i < cb + ((cb % 16) ? (16 - cb % 16) : 0); i++)
+//    {
+//        // address
+//        if(0 == i % 16) {
+//            iMod = i % 0x10000;
+//            sz[o++] = Util_2HexChar(iMod >> 12);
+//            sz[o++] = Util_2HexChar(iMod >> 8);
+//            sz[o++] = Util_2HexChar(iMod >> 4);
+//            sz[o++] = Util_2HexChar(iMod);
+//            sz[o++] = ' ';
+//            sz[o++] = ' ';
+//            sz[o++] = ' ';
+//            sz[o++] = ' ';
+//        } else if(0 == i % 8) {
+//            sz[o++] = ' ';
+//        }
+//        // hex
+//        if(i < cb) {
+//            sz[o++] = Util_2HexChar(pb[i] >> 4);
+//            sz[o++] = Util_2HexChar(pb[i]);
+//            sz[o++] = ' ';
+//        } else {
+//            sz[o++] = ' ';
+//            sz[o++] = ' ';
+//            sz[o++] = ' ';
+//        }
+//        // ascii
+//        if(15 == i % 16) {
+//            sz[o++] = ' ';
+//            sz[o++] = ' ';
+//            for(j = i - 15; j <= i; j++) {
+//                if(j >= cb) {
+//                    sz[o++] = ' ';
+//                } else {
+//                    sz[o++] = UTIL_PRINTASCII[pb[j]];
+//                }
+//            }
+//            sz[o++] = '\n';
+//        }
+//    }
+//    sz[o] = 0;
+//    *pcsz = o;
+//    return TRUE;
+//}
 
 VOID Util_PrintHexAscii(_In_opt_ PLC_CONTEXT ctxLC, _In_ PBYTE pb, _In_ DWORD cb, _In_ DWORD cbInitialOffset)
 {
